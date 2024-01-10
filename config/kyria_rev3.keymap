@@ -17,7 +17,7 @@
 #define FUN 4
 #define CONF 5
 // Macros
-#define MO_TOG &mo_tog layer layer
+#define MO_TOG(layer) &mo_tog layer layer
 
 &led_strip {
     // chain-length = <6>;
