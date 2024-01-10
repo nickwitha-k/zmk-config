@@ -82,10 +82,10 @@
             // | SHIFT         |  Z  |  X  |  C     |  D           |  V         |  LBRACKET  | NAV [CONF] | | FUN        | RBRACKET |  K         |  H    |  ,       |  .    |   /     | SHIFT |
             //                                 |    |       GUI    | RET/LALT   |  BSPC/DEL  | SYM [CONF] | | NUM        |  SPACE   | RET/RCTL   | GUI   | R-ALT    |
             bindings = <
-            &kp ESC             &kp Q &kp W &kp F      &kp P        &kp B                                                            &kp J        &kp L    &kp U     &kp Y   &kp SEMI &kp BSLH
-            &kp TAB             &kp A &kp R &kp S      &kp T        &kp G                                                            &kp M        &kp N    &kp E     &kp I   &kp O    &kp SQT
-            &td_mt_shift(LSHFT) &kp Z &kp X &kp C      &kp D        &kp V        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp K        &kp H    &kp COMMA &kp DOT &kp FSLH &td_mt_shift(RSHIFT)
-                                            &kp LSHIFT &kp LGUI     &mt LALT RET &mt DEL BSPC MO_TOG(SYM)    MO_TOG(NUM)  &kp SPACE  &mt RCTL RET &kp RGUI &kp RSHIFT
+            &kp ESC             &kp Q &kp W &kp F     &kp P        &kp B                                                            &kp J        &kp L    &kp U     &kp Y   &kp SEMI &kp BSLH
+            &kp TAB             &kp A &kp R &kp S     &kp T        &kp G                                                            &kp M        &kp N    &kp E     &kp I   &kp O    &kp SQT
+            &td_mt_shift LSHFT  &kp Z &kp X &kp C     &kp D        &kp V        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp K        &kp H    &kp COMMA &kp DOT &kp FSLH &td_mt_shift RSHFT
+                                            &kp LSHFT &kp LGUI     &mt LALT RET &mt DEL BSPC MO_TOG(SYM)    MO_TOG(NUM)  &kp SPACE  &mt RCTL RET &kp RGUI &kp RSHFT
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
