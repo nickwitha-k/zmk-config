@@ -36,11 +36,19 @@
 	bindings = <&mo>, <&tog>;
       };
 
+      ht_caps_word: hold_tap_caps_word {
+        compatible = "zmk,behavior-hold-tap";
+        #binding-cells = <1>;
+        flavor = "hold-preferred";
+        tapping-term-ms = <200>;
+        bindings = <&kp>, <&caps_word>;
+      };
+
       td_mt_shift: tap_dance_mod_tap_shift {
         compatible = "zmk,behavior-tap-dance";
 	#binding-cells = <1>;
 	tapping-term-ms = <200>;
-	bindings = <&mt &caps_word>, <&kp CAPSLOCK>;
+	bindings = <&ht_caps_word>, <&kp CAPSLOCK>;
       };
 
       spcundr: space_under {
