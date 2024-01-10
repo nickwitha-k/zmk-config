@@ -48,7 +48,7 @@
         compatible = "zmk,behavior-tap-dance";
 	#binding-cells = <1>;
 	tapping-term-ms = <200>;
-	bindings = <&kp LHSFT>, <&kp CAPSLOCK>;
+	bindings = <&kp LSHFT>, <&kp CAPSLOCK>;
       };
 
      td_mt_rshift: tap_dance_mod_tap_shift {
