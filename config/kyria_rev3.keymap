@@ -44,11 +44,18 @@
       //  bindings = <&kp>, <&caps_word>;
       //};
 
-      td_mt_shift: tap_dance_mod_tap_shift {
+      td_mt_lshift: tap_dance_mod_tap_shift {
         compatible = "zmk,behavior-tap-dance";
 	#binding-cells = <1>;
 	tapping-term-ms = <200>;
-	bindings = <&kp>, <&kp CAPSLOCK>;
+	bindings = <&kp LHSFT>, <&kp CAPSLOCK>;
+      };
+
+     td_mt_rshift: tap_dance_mod_tap_shift {
+        compatible = "zmk,behavior-tap-dance";
+	#binding-cells = <1>;
+	tapping-term-ms = <200>;
+	bindings = <&kp RSHFT>, <&caps_word>;
       };
 
       spcundr: space_under {
@@ -92,7 +99,7 @@
             bindings = <
             &kp ESC             &kp Q &kp W &kp F     &kp P        &kp B                                                            &kp J        &kp L    &kp U     &kp Y   &kp SEMI &kp BSLH
             &kp TAB             &kp A &kp R &kp S     &kp T        &kp G                                                            &kp M        &kp N    &kp E     &kp I   &kp O    &kp SQT
-            &td_mt_shift LSHFT  &kp Z &kp X &kp C     &kp D        &kp V        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp K        &kp H    &kp COMMA &kp DOT &kp FSLH &td_mt_shift RSHFT
+            &td_mt_lshift       &kp Z &kp X &kp C     &kp D        &kp V        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp K        &kp H    &kp COMMA &kp DOT &kp FSLH &td_mt_rshift
                                             &kp LSHFT &kp LGUI     &mt LALT RET &mt DEL BSPC MO_TOG(SYM)    MO_TOG(NUM)  &kp SPACE  &mt RCTL RET &kp RGUI &kp RSHFT
             >;
 
