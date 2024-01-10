@@ -44,14 +44,14 @@
       //  bindings = <&kp>, <&caps_word>;
       //};
 
-      td_mt_lshift: tap_dance_mod_tap_shift {
+      td_lshift: tap_dance_lshift {
         compatible = "zmk,behavior-tap-dance";
 	#binding-cells = <1>;
 	tapping-term-ms = <200>;
 	bindings = <&kp LSHFT>, <&kp CAPSLOCK>;
       };
 
-     td_mt_rshift: tap_dance_mod_tap_shift {
+     td_rshift: tap_dance_rshift {
         compatible = "zmk,behavior-tap-dance";
 	#binding-cells = <1>;
 	tapping-term-ms = <200>;
@@ -92,14 +92,14 @@
 
         default_layer {
             // ---------------------------------------------------------------------------------------------------------------------------------
-            // |  ESC          |  Q  |  W  |  F     |  P           |  B         |                                                   |  J         |  L    |  U       |  Y    |   ;     |   \   |
-            // |  TAB          |  A  |  R  |  S     |  T           |  G         |                                                   |  M         |  N    |  E       |  I    |   O     |   '   |
-            // | SHIFT         |  Z  |  X  |  C     |  D           |  V         |  LBRACKET  | NAV [CONF] | | FUN        | RBRACKET |  K         |  H    |  ,       |  .    |   /     | SHIFT |
-            //                                 |    |       GUI    | RET/LALT   |  BSPC/DEL  | SYM [CONF] | | NUM        |  SPACE   | RET/RCTL   | GUI   | R-ALT    |
+            // |  ESC       |  Q  |  W  |  F     |  P           |  B         |                                                   |  J         |  L    |  U       |  Y    |   ;     |   \   |
+            // |  TAB       |  A  |  R  |  S     |  T           |  G         |                                                   |  M         |  N    |  E       |  I    |   O     |   '   |
+            // | SHIFT      |  Z  |  X  |  C     |  D           |  V         |  LBRACKET  | NAV [CONF] | | FUN        | RBRACKET |  K         |  H    |  ,       |  .    |   /     | SHIFT |
+            //                          |        |       GUI    | RET/LALT   |  BSPC/DEL  | SYM [CONF] | | NUM        |  SPACE   | RET/RCTL   | GUI   | R-ALT    |
             bindings = <
-            &kp ESC             &kp Q &kp W &kp F     &kp P        &kp B                                                            &kp J        &kp L    &kp U     &kp Y   &kp SEMI &kp BSLH
-            &kp TAB             &kp A &kp R &kp S     &kp T        &kp G                                                            &kp M        &kp N    &kp E     &kp I   &kp O    &kp SQT
-            &td_mt_lshift       &kp Z &kp X &kp C     &kp D        &kp V        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp K        &kp H    &kp COMMA &kp DOT &kp FSLH &td_mt_rshift
+            &kp ESC          &kp Q &kp W &kp F     &kp P        &kp B                                                            &kp J        &kp L    &kp U     &kp Y   &kp SEMI &kp BSLH
+            &kp TAB          &kp A &kp R &kp S     &kp T        &kp G                                                            &kp M        &kp N    &kp E     &kp I   &kp O    &kp SQT
+            &td_lshift       &kp Z &kp X &kp C     &kp D        &kp V        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp K        &kp H    &kp COMMA &kp DOT &kp FSLH &td_rshift
                                             &kp LSHFT &kp LGUI     &mt LALT RET &mt DEL BSPC MO_TOG(SYM)    MO_TOG(NUM)  &kp SPACE  &mt RCTL RET &kp RGUI &kp RSHFT
             >;
 
