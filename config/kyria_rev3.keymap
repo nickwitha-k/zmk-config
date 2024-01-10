@@ -46,14 +46,14 @@
 
       td_lshift: tap_dance_lshift {
         compatible = "zmk,behavior-tap-dance";
-	#binding-cells = <1>;
+	#binding-cells = <0>;
 	tapping-term-ms = <200>;
 	bindings = <&kp LSHFT>, <&kp CAPSLOCK>;
       };
 
      td_rshift: tap_dance_rshift {
         compatible = "zmk,behavior-tap-dance";
-	#binding-cells = <1>;
+	#binding-cells = <0>;
 	tapping-term-ms = <200>;
 	bindings = <&kp RSHFT>, <&caps_word>;
       };
