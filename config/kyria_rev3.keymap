@@ -92,14 +92,14 @@
 
         default_layer {
             // ---------------------------------------------------------------------------------------------------------------------------------
-            // |  ESC       |  Q  |  W  |  F     |  P           |  B         |                                                   |  J         |  L    |  U       |  Y    |   ;     |   \   |
-            // |  TAB       |  A  |  R  |  S     |  T           |  G         |                                                   |  M         |  N    |  E       |  I    |   O     |   '   |
-            // | SHIFT      |  Z  |  X  |  C     |  D           |  V         |  LBRACKET  | NAV [CONF] | | FUN        | RBRACKET |  K         |  H    |  ,       |  .    |   /     | SHIFT |
+            // |  ESC       |  Q  |  W  |  E     |  R           |  T         |                                                   |  Y         |  U    |  I       |  O    |   P     |   \   |
+            // |  TAB       |  A  |  S  |  D     |  F           |  G         |                                                   |  H         |  J    |  K       |  L    |   ;     |   '   |
+            // | SHIFT      |  Z  |  X  |  C     |  V           |  B         |  LBRACKET  | NAV [CONF] | | FUN        | RBRACKET |  N         |  M    |  ,       |  .    |   /     | SHIFT |
             //                          |        |       GUI    | RET/LALT   |  BSPC/DEL  | SYM [CONF] | | NUM        |  SPACE   | RET/RCTL   | GUI   | R-ALT    |
             bindings = <
-            &kp ESC          &kp Q &kp W &kp F     &kp P        &kp B                                                            &kp J        &kp L    &kp U     &kp Y   &kp SEMI &kp BSLH
-            &kp TAB          &kp A &kp R &kp S     &kp T        &kp G                                                            &kp M        &kp N    &kp E     &kp I   &kp O    &kp SQT
-            &td_lshift       &kp Z &kp X &kp C     &kp D        &kp V        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp K        &kp H    &kp COMMA &kp DOT &kp FSLH &td_rshift
+            &kp ESC          &kp Q &kp W &kp E     &kp R        &kp T                                                            &kp Y        &kp U    &kp I     &kp O   &kp P    &kp BSLH
+            &kp TAB          &kp A &kp S &kp D     &kp F        &kp G                                                            &kp H        &kp J    &kp K     &kp L   &kp SEMI &kp SQT
+            &td_lshift       &kp Z &kp X &kp C     &kp V        &kp B        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp N        &kp M    &kp COMMA &kp DOT &kp FSLH &td_rshift
                                             &kp LSHFT &kp LGUI     &mt LALT RET &mt DEL BSPC MO_TOG(SYM)    MO_TOG(NUM)  &kp SPACE  &mt RCTL RET &kp RGUI &kp RSHFT
             >;
 
