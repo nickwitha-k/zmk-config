@@ -3,195 +3,123 @@
  *
  * SPDX-License-Identifier: MIT
  */
-
+ 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/rgb.h>
-
-// Layer Aliases
-#define DEFAULT 0
-#define NAV 1
-#define NUM 2
-#define FUN 3
-#define CONF 4
-// Macros
-#define MO_TOG(layer) &mo_tog layer layer
 
 &led_strip {
     // chain-length = <6>;
     // chain-length = <31>; // Uncomment if using both per-key and underglow LEDs
      chain-length = <25>; // Uncomment if using only per-key LEDs.
 };
- 
 
 / {
-    behaviors {
-      mo_tog: behavior_mo_tog {
-        compatible = "zmk,behavior-hold-tap";
-	#binding-cells = <2>;
-	flavor = "hold-preferred";
-	tapping-term-ms = <200>;
-	bindings = <&mo>, <&tog>;
-      };
-
-      //ht_caps_word: hold_tap_caps_word {
-      //  compatible = "zmk,behavior-hold-tap";
-      //  #binding-cells = <1>;
-      //  flavor = "hold-preferred";
-      //  tapping-term-ms = <200>;
-      //  bindings = <&kp>, <&caps_word>;
-      //};
-
-      td_lshift: tap_dance_lshift {
-        compatible = "zmk,behavior-tap-dance";
-	#binding-cells = <0>;
-	tapping-term-ms = <200>;
-	bindings = <&kp LSHFT>, <&kp CAPSLOCK>;
-      };
-
-     td_rshift: tap_dance_rshift {
-        compatible = "zmk,behavior-tap-dance";
-	#binding-cells = <0>;
-	tapping-term-ms = <200>;
-	bindings = <&kp RSHFT>, <&caps_word>;
-      };
-
-      spcundr: space_under {
-        compatible = "zmk,behavior-mod-morph";
-        #binding-cells = <0>;
-	bindings = <&kp SPACE>, <&kp UNDER>;
-	mods = <(MOD_LSFT|MOD_RSFT)>;
-      };
-
-      ptrderef: ptr_deref {
-        compatible = "zmk,behavior-mod-morph";
-        #binding-cells = <0>;
-	bindings = <&kp STAR>, <&kp AMPS>;
-	mods = <(MOD_LSFT|MOD_RSFT)>;
-      };
-
-      numfun: num_fun {
-        compatible = "zmk,behavior-mod-morph";
-        #binding-cells = <0>;
-	bindings = <MO_TOG(NUM)>, <MO_TOG(FUN)>;
-	mods = <(MOD_LSFT|MOD_RSFT)>;
-      };
-
-      banghash: bang_hash {
-        compatible = "zmk,behavior-mod-morph";
-        #binding-cells = <0>;
-	bindings = <&kp EXCL>, <&kp HASH>;
-	mods = <(MOD_LSFT|MOD_RSFT)>;
-      };
-
-      rgb_hue_encoder: rgb_hue_encoder {
-        compatible = "zmk,behavior-sensor-rotate";
-        #sensor-binding-cells = <0>;
-        bindings = <&rgb_ug RGB_HUI>, <&rgb_ug RGB_HUD>;
-      };
-
-      rgb_sat_encoder: rgb_sat_encoder {
-        compatible = "zmk,behavior-sensor-rotate";
-        #sensor-binding-cells = <0>;
-        bindings = <&rgb_ug RGB_SAI>, <&rgb_ug RGB_SAD>;
-      };
-
+    macros {
+        MO_TOG: MO_TOG {
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            bindings = <&macro_param_1to1 &macro_param_1to2 &mo_tog MACRO_PLACEHOLDER MACRO_PLACEHOLDER>;
+            label = "MO_TOG";
+        };
     };
 
-    conditional-layers {
-      compatible = "zmk,conditional-layers";
-      tri-layer {
-        if-layers = <NAV NUM>;
-	then-layer = <CONF>;
-      };
+    behaviors {
+        mo_tog: behavior_mo_tog {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MO_TOG";
+            bindings = <&mo>, <&tog>;
+
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+        };
+
+        bang_hash: bang_hash {
+            compatible = "zmk,behavior-mod-morph";
+            label = "BANG_HASH";
+            bindings = <&kp EXCL>, <&kp HASH>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        ptr_deref: ptr_deref {
+            compatible = "zmk,behavior-mod-morph";
+            label = "PTR_DEREF";
+            bindings = <&kp STAR>, <&kp AMPS>;
+
+            #binding-cells = <0>;
+            mods = <(MOD_LSFT|MOD_RSFT)>;
+        };
+
+        rgb_hue_enc: rgb_hue_enc {
+            compatible = "zmk,behavior-sensor-rotate";
+            label = "RGB_HUE_ENC";
+            #sensor-binding-cells = <0>;
+            bindings = <&rgb_ug RGB_HUI>, <&rgb_ug RGB_HUD>;
+        };
+
+        rgb_sat_enc: rgb_sat_enc {
+            compatible = "zmk,behavior-sensor-rotate";
+            label = "RGB_SAT_ENC";
+            #sensor-binding-cells = <0>;
+            bindings = <&rgb_ug RGB_SAI>, <&rgb_ug RGB_SAD>;
+        };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
-            // ---------------------------------------------------------------------------------------------------------------------------------
-            // |  ESC  |  Q  |  W  |  E  |  R         |  T       |                                                        |  Y       |  U        | I |  O    |   P     |   \   |
-            // |  TAB  |  A  |  S  |  D  |  F         |  G       |                                                        |  H       |  J        | K |  L    |   ;     |   '   |
-            // | SHIFT |  Z  |  X  |  C  |  V         |  B       |  LBRACKET | ! (#)      | |       * (&)      | RBRACKET |  N       |  M        | , |  .    |   /     | SHIFT |
-            //                     |  (  |  - (_)/GUI | RET/LCTL |  BSPC/DEL | NAV [CONF] | | NUM (FUN) [CONF] |  SPACE   | RET/RALT | = (+)/GUI | ) |
+        DEFAULT {
             bindings = <
-            &kp ESC          &kp Q &kp W &kp E    &kp R          &kp T                                                       &kp Y        &kp U    &kp I     &kp O   &kp P    &kp BSLH
-            &kp TAB          &kp A &kp S &kp D    &kp F          &kp G                                                       &kp H        &kp J    &kp K     &kp L   &kp SEMI &kp SQT
-            &td_lshift       &kp Z &kp X &kp C    &kp V          &kp B        &kp LBKT     &banghash   &ptrderef  &kp RBKT   &kp N        &kp M    &kp COMMA &kp DOT &kp FSLH &td_rshift
-                                         &kp LPAR &mt LGUI MINUS &mt LALT RET &mt DEL BSPC MO_TOG(NAV) MO_TOG(NUM)    &kp SPACE  &mt RCTRL RET &kp RGUI &kp RPAR
+&kp ESC    &kp Q  &kp W  &kp E         &kp R           &kp T                                                  &kp Y      &kp U           &kp I         &kp O    &kp P     &kp BSLH
+&kp TAB    &kp A  &kp S  &kp D         &kp F           &kp G                                                  &kp H      &kp J           &kp K         &kp L    &kp SEMI  &kp APOS
+&kp LSHFT  &kp Z  &kp X  &kp C         &kp V           &kp B     &kp LBKT  &bang_hash  &ptr_deref  &kp RBKT   &kp N      &kp M           &kp COMMA     &kp DOT  &kp FSLH  &kp RSHFT
+                         &kp LS(LPAR)  &mt LGUI MINUS  &kp LALT  &kp BSPC  &MO_TOG 1   &MO_TOG 2   &kp SPACE  &kp RCTRL  &mt RGUI EQUAL  &kp LS(RPAR)
             >;
 
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+            sensor-bindings =
+                <&inc_dec_kp C_VOL_UP C_VOL_DN>,
+                <&inc_dec_kp PAGE_UP PAGE_DOWN>;
         };
 
-        navigation_layer {
-            // ---------------------------------------------------------------------------------------------------------------------------------
-            // | ---- | ---- | ---- | ---- | ---- | ---- |                              |  Pgup  |  Home  |    Up    |   End  | --- | --- |
-            // | ---- | ---- | ---- | ---- | ---- | ---- |                              |  Pgdw  |  Left  |   Down   |  Right | --- | --- |
-            // | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |  | ---- | ---- | ------ | ------ | -------- | ------ | --- | --- |
-            //                      | ---- | ---- | ---- | ---- | ---- |  | ---- | ---- | ------ | ------ | -------- |
+        NAV {
             bindings = <
-               &trans &trans &trans &trans &trans &trans                                &kp PG_UP &kp HOME &kp UP   &kp END   &trans &trans
-               &trans &trans &trans &trans &trans &trans                                &kp PG_DN &kp LEFT &kp DOWN &kp RIGHT &trans &trans
-               &trans &trans &trans &trans &trans &trans &trans &trans    &trans &trans &trans    &trans   &trans   &trans &trans &trans
-                                    &trans &trans &trans &trans &trans    &trans &trans &trans    &trans   &trans
+&trans  &trans  &trans  &trans  &trans  &trans                                  &kp PAGE_UP    &kp HOME        &kp UP_ARROW    &kp END          &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                                  &kp PAGE_DOWN  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans         &trans          &trans          &trans           &trans  &trans
+                        &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans         &trans          &trans
+            >;
+        };
+
+        NUM {
+            bindings = <
+&kp GRAVE  &kp EXCL  &trans  &trans  &trans  &trans                                  &kp CARET     &kp N7  &kp N8  &kp N9  &trans  &trans
+&kp HASH   &kp AT    &trans  &trans  &trans  &trans                                  &kp PERCENT   &kp N4  &kp N5  &kp N6  &trans  &trans
+&trans     &trans    &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &kp NUMBER_0  &kp N1  &kp N2  &kp N3  &trans  &trans
+                             &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans        &trans  &trans
+            >;
+        };
+
+        CONF {
+            bindings = <
+&trans  &trans  &bt BT_CLR  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2                                  &trans  &trans  &trans  &trans           &trans           &rgb_ug RGB_TOG
+&trans  &trans  &bt BT_PRV  &bt BT_SEL 3  &bt BT_SEL 4  &bt BT_NXT                                    &trans  &trans  &trans  &rgb_ug RGB_EFF  &rgb_ug RGB_SPI  &rgb_ug RGB_BRI
+&trans  &trans  &trans      &trans        &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans  &rgb_ug RGB_EFR  &rgb_ug RGB_SPD  &rgb_ug RGB_BRD
+                            &trans        &trans        &trans        &trans  &trans  &trans  &trans  &trans  &trans  &trans
             >;
 
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
+            sensor-bindings = <&rgb_hue_enc>, <&rgb_sat_enc>;
+        };
+    };
 
-	};
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
 
-	numbers_layer {
-            // ---------------------------------------------------------------------------------------------------------------------------------
-            // | `     |  !  |  +  |  [   |  ]   |  =   |                                          |  ^   |  7    |  8    |  9   |   *   |   /   |
-            // | #     |  @  |  _  |  (   |  )   |  -   |                                          |  %   |  4    |  5    |  6   |   +   |   .   |
-            // | ~     |  \  |  &  |  {   |  }   |  |   |   ---   |  ---    |  |   ---   |  ---    |  $   |  1    |  2    |  3   |   -   | SHIFT |
-            //                     | ENC  | ---  | ---  |   ---   |  ---    |  |   ---   |  ---    | ---  |  0    | ---   |
-            bindings = <
-            &kp GRAVE &kp EXCL &kp PLUS  &kp LBKT &kp RBKT &kp EQUAL                             &kp CARET &kp N7 &kp N8 &kp N9 &kp KP_MULTIPLY &kp KP_DIVIDE
-            &kp HASH  &kp AT   &kp UNDER &kp LPAR &kp RPAR &kp MINUS                             &kp PRCNT &kp N4 &kp N5 &kp N6 &kp KP_PLUS     &kp DOT
-            &kp TILDE &kp BSLH &kp AMPS  &kp LBRC &kp RBRC &kp PIPE &trans &trans  &trans &trans &kp DLLR  &kp N1 &kp N2 &kp N3 &kp KP_MINUS    &trans
-                                         &trans   &trans   &trans   &trans &trans  &trans &trans &trans    &kp N0 &trans
-
-            >;
-
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-
-	};
-
-        function_layer {
-           // ---------------------------------------------------------------------------------------------------------------------------------
-           // | none | none | none | none | none | none |                                 | F9   |  F10  |  F11  |  F12 | Print | ScrollLock |
-           // | none | none | none | none | none | none |                                 | F5   |  F6   |  F7   |  F8  |  Ins  | PauseBreak |
-           // | none | none | none | none | none | none | none | --- |  |   ---   |  ---  | F1   |  F2   |  F3   |  F4  |  Del  | none       |
-           //                      | none | none | none | none | --- |  |   ---   |  ---  | ---  | ---   | ---   |
-           bindings = <
-           &none   &none   &none   &none   &none   &none                                &kp F9 &kp F10 &kp F11 &kp F12 &kp PSCRN &kp SLCK
-           &none   &none   &none   &none   &none   &none                                &kp F5 &kp F6  &kp F7  &kp F8  &kp INS   &kp PAUSE_BREAK
-           &none   &none   &none   &none   &none   &none  &none  &trans   &trans &none  &kp F1 &kp F2  &kp F3  &kp F4  &none     &none
-                                   &none   &none   &trans &trans &trans   &trans &trans &trans &trans  &trans  &trans  &trans    &none
-           >;
-
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-
-	};
-
-	config_layer {
-            // ---------------------------------------------------------------------------------------------------------------------------------
-            // |       |      |BT_CLR|BTSEL0|BTSEL1|BTSEL2|                                         |      |      |          |      |            | RGB ON/OFF |
-            // |       |      |      |BTSEL3|BTSEL4|      |                                         |      |      |          |      | RGB SPEED+ | RGB BRIGHT+|
-            // |       |      |      |      |      |      |      |      |      |      |      |      |      |      |          |      | RGB SPEED- | RGB BRIGHT-|
-            //                       |      |      |      |      |      |      |      |      |      |      |      | RGB EFF+ |
-            bindings = <
-            &trans &trans &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2                              &trans &trans &trans &trans &trans &rgb_ug RGB_TOG
-            &trans &trans &trans     &bt BT_SEL 3 &bt BT_SEL 4 &trans                                    &trans &trans &trans &trans &rgb_ug RGB_SPI &rgb_ug RGB_BRI
-            &trans &trans &trans     &trans       &trans       &trans &trans &trans        &trans &trans &trans &trans &trans &trans &rgb_ug RGB_SPD &rgb_ug RGB_BRD
-                                     &trans       &trans       &trans &trans &trans        &trans &trans &trans &trans &rgb_ug RGB_EFF
-            >;
-
-            sensor-bindings = <&rgb_hue_encoder &rgb_sat_encoder>;
+        CON_LAYER {
+            if-layers = <1 2>;
+            then-layer = <3>;
         };
     };
 };
