@@ -13,9 +13,8 @@
 #define DEFAULT 0
 #define NAV 1
 #define NUM 2
-#define SYM 3
-#define FUN 4
-#define CONF 5
+#define FUN 3
+#define CONF 4
 // Macros
 #define MO_TOG(layer) &mo_tog layer layer
 
@@ -65,6 +64,27 @@
 	mods = <(MOD_LSFT|MOD_RSFT)>;
       };
 
+      ptrderef: ptr_deref {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+	bindings = <&kp STAR>, <&kp AMPS>;
+	mods = <(MOD_LSFT|MOD_RSFT)>;
+      };
+
+      numfun: num_fun {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+	bindings = <MO_TOG(NUM)>, <MO_TOG(FUN)>;
+	mods = <(MOD_LSFT|MOD_RSFT)>;
+      };
+
+      banghash: bang_hash {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+	bindings = <&kp EXCL>, <&kp HASH>;
+	mods = <(MOD_LSFT|MOD_RSFT)>;
+      };
+
       rgb_hue_encoder: rgb_hue_encoder {
         compatible = "zmk,behavior-sensor-rotate";
         #sensor-binding-cells = <0>;
@@ -82,7 +102,7 @@
     conditional-layers {
       compatible = "zmk,conditional-layers";
       tri-layer {
-        if-layers = <NAV SYM>;
+        if-layers = <NAV NUM>;
 	then-layer = <CONF>;
       };
     };
@@ -92,15 +112,15 @@
 
         default_layer {
             // ---------------------------------------------------------------------------------------------------------------------------------
-            // |  ESC       |  Q  |  W  |  E     |  R           |  T         |                                                   |  Y         |  U    |  I       |  O    |   P     |   \   |
-            // |  TAB       |  A  |  S  |  D     |  F           |  G         |                                                   |  H         |  J    |  K       |  L    |   ;     |   '   |
-            // | SHIFT      |  Z  |  X  |  C     |  V           |  B         |  LBRACKET  | NAV [CONF] | | FUN        | RBRACKET |  N         |  M    |  ,       |  .    |   /     | SHIFT |
-            //                          |        |       GUI    | RET/LALT   |  BSPC/DEL  | SYM [CONF] | | NUM        |  SPACE   | RET/RCTL   | GUI   | R-ALT    |
+            // |  ESC  |  Q  |  W  |  E  |  R         |  T       |                                                        |  Y       |  U        | I |  O    |   P     |   \   |
+            // |  TAB  |  A  |  S  |  D  |  F         |  G       |                                                        |  H       |  J        | K |  L    |   ;     |   '   |
+            // | SHIFT |  Z  |  X  |  C  |  V         |  B       |  LBRACKET | ! (#)      | |       * (&)      | RBRACKET |  N       |  M        | , |  .    |   /     | SHIFT |
+            //                     |  (  |  - (_)/GUI | RET/LCTL |  BSPC/DEL | NAV [CONF] | | NUM (FUN) [CONF] |  SPACE   | RET/RALT | = (+)/GUI | ) |
             bindings = <
-            &kp ESC          &kp Q &kp W &kp E     &kp R        &kp T                                                            &kp Y        &kp U    &kp I     &kp O   &kp P    &kp BSLH
-            &kp TAB          &kp A &kp S &kp D     &kp F        &kp G                                                            &kp H        &kp J    &kp K     &kp L   &kp SEMI &kp SQT
-            &td_lshift       &kp Z &kp X &kp C     &kp V        &kp B        &kp LBKT     MO_TOG(NAV)    MO_TOG(FUN)  &kp RBKT   &kp N        &kp M    &kp COMMA &kp DOT &kp FSLH &td_rshift
-                                            &kp LSHFT &kp LGUI     &mt LALT RET &mt DEL BSPC MO_TOG(SYM)    MO_TOG(NUM)  &kp SPACE  &mt RCTL RET &kp RGUI &kp RSHFT
+            &kp ESC          &kp Q &kp W &kp E    &kp R          &kp T                                                       &kp Y        &kp U    &kp I     &kp O   &kp P    &kp BSLH
+            &kp TAB          &kp A &kp S &kp D    &kp F          &kp G                                                       &kp H        &kp J    &kp K     &kp L   &kp SEMI &kp SQT
+            &td_lshift       &kp Z &kp X &kp C    &kp V          &kp B        &kp LBKT     &banghash   &ptrderef  &kp RBKT   &kp N        &kp M    &kp COMMA &kp DOT &kp FSLH &td_rshift
+                                         &kp LPAR &mt LGUI MINUS &mt LALT RET &mt DEL BSPC MO_TOG(NAV) &numfun    &kp SPACE  &mt RCTL RET &kp RGUI &kp RPAR
             >;
 
             sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
@@ -134,24 +154,6 @@
             &kp HASH  &kp AT   &kp UNDER &kp LPAR &kp RPAR &kp MINUS                             &kp PRCNT &kp N4 &kp N5 &kp N6 &kp KP_PLUS     &kp DOT
             &kp TILDE &kp BSLH &kp AMPS  &kp LBRC &kp RBRC &kp PIPE &trans &trans  &trans &trans &kp DLLR  &kp N1 &kp N2 &kp N3 &kp KP_MINUS    &trans
                                          &trans   &trans   &trans   &trans &trans  &trans &trans &trans    &kp N0 &trans
-
-            >;
-
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN &inc_dec_kp PG_UP PG_DN>;
-
-	};
-
-	symbols_layer {
-            // ---------------------------------------------------------------------------------------------------------------------------------
-            // | `     |  !  |  +  |  [   |  ]   |  =   |                                          |  ^   |  7    |  8    |  9   |   *   | /    |
-            // | #     |  @  |  _  |  (   |  )   |  -   |                                          |  %   |  4    |  5    |  6   |   +   | ---  |
-            // | ~     |  \  |  &  |  {   |  }   |  |   |   ---   |  ---    |  |   ---   |  ---    |  $   |  1    |  2    |  3   |   -   | ---  |
-            //                     | ENC  | ---  | ---  |   ---   |  ---    |  |   ---   |  ---    | ---  | ---   | ---   |
-            bindings = <
-            &kp GRAVE &kp EXCL &kp PLUS  &kp LBKT &kp RBKT &kp EQUAL                             &kp CARET &kp N7 &kp N8 &kp N9 &kp KP_MULTIPLY &kp KP_DIVIDE
-            &kp HASH  &kp AT   &kp UNDER &kp LPAR &kp RPAR &kp MINUS                             &kp PRCNT &kp N4 &kp N5 &kp N6 &kp KP_PLUS &none
-            &kp TILDE &kp BSLH &kp AMPS  &kp LBRC &kp RBRC &kp PIPE &trans &trans  &trans &trans &kp DLLR  &kp N1 &kp N2 &kp N3 &kp KP_MINUS &trans
-                                   &trans  &trans   &trans          &trans &trans  &trans &trans    &kp N0  &kp DOT    &trans
 
             >;
 
